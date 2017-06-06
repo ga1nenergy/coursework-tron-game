@@ -9,13 +9,12 @@ import java.awt.event.KeyListener;
  */
 
 public class Player extends GameObject implements KeyListener {
-    private int orig_state_x, orig_state_y;
+    private int number;
 
-    Player(String name) {
-        super(name, Color.white);
-        orig_state_x = (Root.WIDTH - 20)/2 - 20;
-        orig_state_y = (Root.HEIGHT)/2;
-        moveTo(orig_state_x, orig_state_y);
+    Player(int number, String name, int x, int y, Color color) {
+        super(name, x, y, color);
+
+        this.number = number;
     }
 
     @Override
@@ -38,11 +37,7 @@ public class Player extends GameObject implements KeyListener {
 
     }
 
-    public int getOrig_state_x() {
-        return orig_state_x;
-    }
-
-    public int getOrig_state_y() {
-        return orig_state_y;
+    public int getNumber() {
+        return number;
     }
 }

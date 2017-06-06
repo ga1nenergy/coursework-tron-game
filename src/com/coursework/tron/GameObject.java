@@ -8,9 +8,10 @@ import java.awt.image.BufferedImage;
  */
 public class GameObject extends GameModel {
     private String name;
-    private double velocity = 2; //pixels per update
-    private enum Direction {UP, DOWN, LEFT, RIGHT};
+    private double velocity = 1; //pixels per update
+    enum Direction {UP, DOWN, LEFT, RIGHT};
     private Direction direction = Direction.UP;
+    private int orig_state_x, orig_state_y;
 
     GameObject() {
         super();
@@ -22,10 +23,26 @@ public class GameObject extends GameModel {
         this.name = name;
     }
 
+    GameObject(String name, int x, int y, Color color) {
+        super(x, y, 10, 10, color);
+        this.name = name;
+        orig_state_x = x;
+        orig_state_y = y;
+    }
+
     GameObject(String name, String path)
     {
         super(path);
         this.name = name;
+    }
+
+    public void drawTrace(BufferedImage image) {
+        Graphics g = image.getGraphics();
+
+        g.setColor(getColor());
+        g.fillRect(x - 4, y - 4, 10 ,10);
+
+        g.dispose();
     }
 
     public void move() {
@@ -36,7 +53,6 @@ public class GameObject extends GameModel {
             case LEFT: super.x -= velocity; super.y += 0; break;
             case RIGHT: super.x += velocity; super.y += 0; break;
         }
-        //System.out.println("(" + x + " " + y + ")");
     }
 
     public void moveTo(int x, int y)
@@ -46,23 +62,20 @@ public class GameObject extends GameModel {
     }
 
     public boolean checkCollision(BufferedImage image) {
-        //BufferedImage object = (BufferedImage) getImage();
         boolean ifCollided = false;
-        //System.out.println(image.getRGB(getX(), getY()));
 
         switch (direction) {
             case RIGHT:
-                if (Color.black.getRGB() != image.getRGB(getX() + 1, getY()))
-                    ifCollided = true;
-                /*System.out.println("im here!"); */break;
+                if (Color.black.getRGB() != image.getRGB(getX() + 5, getY()))
+                    ifCollided = true; break;
             case LEFT:
-                if (Color.black.getRGB() != image.getRGB(getX() - 1, getY()))
+                if (Color.black.getRGB() != image.getRGB(getX() - 5, getY()))
                     ifCollided = true; break;
             case UP:
-                if (Color.black.getRGB() != image.getRGB(getX() , getY() - 1))
+                if (Color.black.getRGB() != image.getRGB(getX() , getY() - 5))
                     ifCollided = true; break;
             case DOWN:
-                if (Color.black.getRGB() != image.getRGB(getX(), getY() + 1))
+                if (Color.black.getRGB() != image.getRGB(getX(), getY() + 5))
                     ifCollided =  true; break;
         }
         //System.out.println(ifCollided);
@@ -71,21 +84,36 @@ public class GameObject extends GameModel {
         return ifCollided;
     }
 
-    /*public void changeDirection(Direction direction)
-    {
-        this.direction = direction;
-    }*/
-    public void moveUp() {direction = Direction.UP;}
+    public void moveUp() {
+        if (direction != Direction.DOWN)
+            direction = Direction.UP;
+    }
         //System.out.println("UP");}
-    public void moveDown() {direction = Direction.DOWN;}
-        //System.out.println("DOWN");}
-    public void moveLeft() {direction = Direction.LEFT;}
-        //System.out.println("LEFT");}
-    public void moveRight() {direction = Direction.RIGHT;}
-        //System.out.println("RIGHT");}
+    public void moveDown() {
+        if (direction != Direction.UP)
+            direction = Direction.DOWN;
+    }
+    public void moveLeft() {
+        if (direction != Direction.RIGHT)
+            direction = Direction.LEFT;
+    }
+    public void moveRight() {
+        if (direction != Direction.LEFT)
+            direction = Direction.RIGHT;
+    }
 
     public String getName() {return name;}
     public Direction getDirection() {
         return direction;
     }
+
+    public int getOrig_state_x() {
+        return orig_state_x;
+    }
+
+    public int getOrig_state_y() {
+        return orig_state_y;
+    }
+
+    public void setOriginDirection() {direction = Direction.UP;}
 }

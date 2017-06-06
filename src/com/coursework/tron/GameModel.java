@@ -12,12 +12,9 @@ public abstract class GameModel {
     private Image image;
     private Color color;
     protected int x, y;
-    //private int[] pixels;
-    //Rectangle rectangle;
 
     public  GameModel() {
         image = null;
-        //pixels = null;
     }
 
     public GameModel(String path) { //конструктор для текстур
@@ -27,7 +24,6 @@ public abstract class GameModel {
             e.printStackTrace();
         }
         color = null;
-        //pixels = bufferedImage.getRGB(0, 0, width, height, pixels, 0, width);
     }
 
     public GameModel(int x, int y, int width, int height, Color color) { //конструктор для прямоугольников
@@ -39,8 +35,6 @@ public abstract class GameModel {
         g.dispose();
 
         this.color = color;
-        //this.width = width;
-        //this.height = height;
     }
 
     public Image getImage() {
